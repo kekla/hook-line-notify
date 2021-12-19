@@ -2,6 +2,9 @@ const port = 3000;
 const express = require('express');
 const axios = require('axios');
 const app = express();
+const https = require('https');
+const fs = require('fs');
+
 
 const apiPath = process.env.API_PATH || '/';
 const lineToken = process.env.LINE_TOKEN || '';
@@ -22,6 +25,11 @@ app.get(apiPath, async (req, res) => {
   }
 });
 
-app.listen(port, () => {
+const server = https.createServer({
+  key: fs.readFileSync('./private-key.pem'),
+  cert: fs.readFileSync('./cert.pem')
+}, app);
+
+server.listen(port, () => {
 
 });
